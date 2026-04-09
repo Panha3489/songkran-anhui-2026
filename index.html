@@ -79,12 +79,13 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: titleGlow 3s linear infinite;
-            text-shadow: 0 0 25px rgba(245, 124, 0, 0.9), 0 2px 4px rgba(0,0,0,0.2);
+            /* ✅ 优化：调小橙色光晕，增强字体辨识度 */
+            text-shadow: 0 0 8px rgba(245, 124, 0, 0.5), 0 1px 2px rgba(0,0,0,0.2);
             margin-bottom: 30px;
             letter-spacing: 10px;
             /* 英文标题用西文字体，避免高棉语字体干扰 */
             font-family: 'Arial Black', 'STKaiti', 'KaiTi', sans-serif;
-            -webkit-text-stroke: 0.5px #f57c00;
+            -webkit-text-stroke: 0.8px #f57c00; /* 轻微加粗描边，凸显字体 */
         }
 
         @keyframes titleGlow {
@@ -275,15 +276,16 @@
         .star-2 { left: 50%; transform: translate(-50%, -50%); animation: swing 3.2s ease-in-out infinite 0.3s; }
         .star-3 { right: 0; animation: swing 3.5s ease-in-out infinite 0.6s; }
 
+        /* ✅ 优化：烟花覆盖整个背景，调整大小和密度 */
         .firework {
             position: fixed !important;
-            width: 5px;
-            height: 5px;
+            width: 6px; /* 轻微增大烟花点，更显眼 */
+            height: 6px;
             border-radius: 50%;
             background: #fff;
-            animation: firework 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation: firework 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             z-index: 1;
-            box-shadow: 0 0 12px rgba(255,255,255,0.9);
+            box-shadow: 0 0 15px rgba(255,255,255,0.8); /* 调柔光效，不抢主体 */
             transform: translateZ(0);
             opacity: 0;
             pointer-events: none;
@@ -291,7 +293,7 @@
         @keyframes firework {
             0% { transform: scale(0); opacity: 1; }
             50% { opacity: 1; }
-            100% { transform: scale(30); opacity: 0; }
+            100% { transform: scale(40); /* 增大爆炸范围，覆盖更广 */ opacity: 0; }
         }
 
         /* ✅ 核心优化6：iOS移动端高棉语适配增强 */
@@ -300,6 +302,9 @@
                 font-size: 40px; 
                 letter-spacing: 6px;
                 margin-bottom: 20px;
+                /* 移动端同步优化标题特效 */
+                text-shadow: 0 0 5px rgba(245, 124, 0, 0.5), 0 1px 2px rgba(0,0,0,0.2);
+                -webkit-text-stroke: 0.5px #f57c00;
             }
             .bigtitle {
                 font-size: 36px; /* iOS高棉语大标题缩小，避免溢出 */
@@ -339,7 +344,12 @@
 
         /* ✅ 适配iOS小屏（iPhone SE/12 mini等） */
         @media (max-width: 480px) {
-            .title { font-size: 32px; letter-spacing: 4px; }
+            .title { 
+                font-size: 32px; 
+                letter-spacing: 4px;
+                text-shadow: 0 0 4px rgba(245, 124, 0, 0.5), 0 1px 2px rgba(0,0,0,0.2);
+                -webkit-text-stroke: 0.4px #f57c00;
+            }
             .bigtitle { font-size: 30px; }
             .blessing { font-size: 18px; }
             .words { font-size: 16px; }
@@ -419,28 +429,30 @@
         function createSingleFirework() {
             const firework = document.createElement('div');
             firework.className = 'firework';
+            // ✅ 优化：烟花Y轴范围从60vh扩展到100vh，覆盖整个页面高度
             firework.style.left = Math.random() * 100 + 'vw';
-            firework.style.top = Math.random() * 60 + 'vh';
+            firework.style.top = Math.random() * 100 + 'vh';
             firework.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
             document.body.appendChild(firework);
-            setTimeout(() => firework.remove(), 1500);
+            setTimeout(() => firework.remove(), 1800); // 同步动画时长
         }
 
         // 持续烟花
         function startContinuousFireworks() {
             let initCount = 0;
             const initTimer = setInterval(() => {
-                if (initCount >= 10) {
+                if (initCount >= 15) { // 初始烟花数量增加，更饱满
                     clearInterval(initTimer);
+                    // ✅ 优化：缩短间隔，增加烟花密度，覆盖更全
                     setInterval(() => {
-                        const count = Math.floor(Math.random() * 3) + 1;
+                        const count = Math.floor(Math.random() * 4) + 1; // 每次1-4个烟花
                         for (let i = 0; i < count; i++) createSingleFirework();
-                    }, 500);
+                    }, 400); // 间隔从500ms缩短到400ms，更密集
                     return;
                 }
                 createSingleFirework();
                 initCount++;
-            }, 100);
+            }, 80); // 初始生成间隔缩短，更快铺满背景
         }
 
         window.onload = () => {
