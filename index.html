@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="km"> <!-- ✅ 改为高棉语主语言，提升系统字体适配优先级 -->
 <head>
     <meta charset="UTF-8">
+    <!-- ✅ 新增高棉语字符编码适配，解决iOS渲染异常 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>2026 SONGKRAN ANHUI</title>
     <style>
@@ -15,30 +17,32 @@
         html {
             height: 100%;
             width: 100%;
-            /* 隐藏滚动条但保留滚动功能（兼容多浏览器） */
             scrollbar-width: none; /* 火狐 */
             -ms-overflow-style: none; /* IE/Edge */
         }
-        /* 隐藏Chrome/Safari滚动条 */
         html::-webkit-scrollbar {
             display: none;
         }
 
+        /* ✅ 核心优化2：高棉语字体优先级配置（iOS专用） */
         body {
-            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            /* 优先级：iOS高棉语专用 > 通用高棉语 > 系统无衬线 > 中文备用 */
+            font-family: 'Khmer OS', 'Khmer UI', 'Khmer Sangam MN', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background: linear-gradient(135deg, rgba(251, 223, 160, 0.2), rgba(248, 203, 104, 0.2));
-            /* ✅ 移除overflow:hidden，恢复滚动 */
-            height: auto; /* 改为auto，适配内容高度 */
+            height: auto;
             width: 100%;
             position: relative;
-            /* 移动端用block+padding代替flex居中，避免滚动冲突 */
             display: block;
-            padding: 20px 15px 40px; /* 上下留边距，避免内容贴边 */
+            padding: 20px 15px 40px;
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
+            /* ✅ 修复高棉语字符间距/换行异常 */
+            line-height: 1.5;
+            word-break: break-word; /* 高棉语长句自动换行 */
+            hyphens: auto; /* iOS高棉语连字符适配 */
         }
 
-        /* ✅ 核心优化2：花瓣/烟花仍用fixed，不影响滚动 */
+        /* ✅ 核心优化3：花瓣/烟花仍用fixed，不影响滚动 */
         .snowflake {
             position: fixed !important;
             top: -10px;
@@ -48,19 +52,18 @@
             animation: snowfall linear infinite;
             text-shadow: 0 0 2px rgba(0,0,0,0.3);
             transform: translateZ(0);
-            pointer-events: none; /* 避免遮挡点击 */
+            pointer-events: none;
         }
 
         @keyframes snowfall {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(150vh) rotate(360deg); opacity: 0; } /* 适配滚动后的高度 */
+            100% { transform: translateY(150vh) rotate(360deg); opacity: 0; }
         }
 
-        /* 主容器：适配滚动，居中显示 */
         .container {
             max-width: 1200px;
             width: 100%;
-            margin: 0 auto; /* 水平居中 */
+            margin: 0 auto;
             text-align: center;
             position: relative;
             z-index: 2;
@@ -79,7 +82,8 @@
             text-shadow: 0 0 25px rgba(245, 124, 0, 0.9), 0 2px 4px rgba(0,0,0,0.2);
             margin-bottom: 30px;
             letter-spacing: 10px;
-            font-family: 'STKaiti', 'KaiTi', 'Microsoft YaHei', serif;
+            /* 英文标题用西文字体，避免高棉语字体干扰 */
+            font-family: 'Arial Black', 'STKaiti', 'KaiTi', sans-serif;
             -webkit-text-stroke: 0.5px #f57c00;
         }
 
@@ -95,7 +99,6 @@
             padding: 60px 40px;
             margin: 20px auto 30px;
             max-width: 800px;
-            /* ✅ 移除max-height限制，避免内容被截断 */
             overflow: visible;
             box-shadow: inset 0 0 80px rgba(255,255,255,0.8), 0 20px 40px rgba(0,0,0,0.15);
             position: relative;
@@ -125,41 +128,54 @@
             50% { transform: translateY(-10px); }
         }
 
+        /* ✅ 核心优化4：高棉语专用样式（iOS适配） */
         .bigtitle {
+            /* 高棉语大标题：强制使用iOS高棉语字体 */
+            font-family: 'Khmer Sangam MN', 'Khmer OS', 'Khmer UI', sans-serif;
             font-size: 48px;
             color: #b71c1c;
-            line-height: 1.5;
+            line-height: 1.6; /* 高棉语字符行高适配 */
             margin: 20px 0;
             animation: textFade 2s ease-in-out infinite alternate;
             font-weight: 700;
             text-shadow: 0 2px 4px rgba(255,255,255,0.9), 0 1px 2px rgba(0,0,0,0.3);
             -webkit-text-stroke: 0.3px #8c0000;
-            letter-spacing: 2px;
-            font-family: 'STKaiti', 'KaiTi', serif;
+            letter-spacing: 1px; /* 降低高棉语字母间距，避免过宽 */
         }
         .blessing {
+            /* 高棉语祝福文本：iOS专用字体 + 适配行高 */
+            font-family: 'Khmer Sangam MN', 'Khmer OS', 'Khmer UI', sans-serif;
             font-size: 32px;
             color: #b71c1c;
-            line-height: 2.2;
+            line-height: 1.8; /* ✅ 优化高棉语行高（原2.2过宽） */
             margin: 20px 0;
             animation: textFade 2s ease-in-out infinite alternate;
             font-weight: 700;
             text-shadow: 0 2px 4px rgba(255,255,255,0.9), 0 1px 2px rgba(0,0,0,0.3);
             -webkit-text-stroke: 0.3px #8c0000;
-            letter-spacing: 2px;
-            font-family: 'STKaiti', 'KaiTi', serif;
+            letter-spacing: 1px; /* 高棉语字符间距规范化 */
         }
         .words {
+            /* 高棉语流程文本：更小间距+适配行高 */
+            font-family: 'Khmer Sangam MN', 'Khmer OS', 'Khmer UI', sans-serif;
             font-size: 20px;
             color: #d32f2f;
-            line-height: 1.8;
+            line-height: 1.6; /* ✅ 优化高棉语列表行高 */
             margin: 15px 0;
             animation: textFade 2s ease-in-out infinite alternate;
             font-weight: 600;
             text-shadow: 0 1px 3px rgba(255,255,255,0.8), 0 1px 2px rgba(0,0,0,0.2);
             -webkit-text-stroke: 0.2px #a00000;
-            letter-spacing: 1px;
-            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            letter-spacing: 0.5px; /* 高棉语小号文本间距优化 */
+            text-align: left; /* 高棉语列表左对齐更规范 */
+            padding-left: 10px; /* 列表缩进，提升可读性 */
+        }
+
+        /* ✅ 核心优化5：中英文文本单独指定字体（避免干扰高棉语） */
+        .blessing:lang(en), .blessing:lang(zh) {
+            font-family: 'STKaiti', 'KaiTi', 'PingFang SC', sans-serif;
+            letter-spacing: 2px; /* 恢复中英文间距 */
+            line-height: 2.0; /* 恢复中英文行高 */
         }
 
         @keyframes textFade {
@@ -185,6 +201,8 @@
             transform: translateZ(0);
             position: relative;
             overflow: hidden;
+            /* 按钮文字用中文专用字体 */
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
 
         .card a:hover {
@@ -257,7 +275,6 @@
         .star-2 { left: 50%; transform: translate(-50%, -50%); animation: swing 3.2s ease-in-out infinite 0.3s; }
         .star-3 { right: 0; animation: swing 3.5s ease-in-out infinite 0.6s; }
 
-        /* 烟花仍用fixed，不影响滚动 */
         .firework {
             position: fixed !important;
             width: 5px;
@@ -269,7 +286,7 @@
             box-shadow: 0 0 12px rgba(255,255,255,0.9);
             transform: translateZ(0);
             opacity: 0;
-            pointer-events: none; /* 避免遮挡点击 */
+            pointer-events: none;
         }
         @keyframes firework {
             0% { transform: scale(0); opacity: 1; }
@@ -277,20 +294,31 @@
             100% { transform: scale(30); opacity: 0; }
         }
 
-        /* ✅ 核心优化3：移动端适配增强 */
+        /* ✅ 核心优化6：iOS移动端高棉语适配增强 */
         @media (max-width: 768px) {
             .title { 
                 font-size: 40px; 
                 letter-spacing: 6px;
-                margin-bottom: 20px; /* 减少间距，节省空间 */
+                margin-bottom: 20px;
+            }
+            .bigtitle {
+                font-size: 36px; /* iOS高棉语大标题缩小，避免溢出 */
+                line-height: 1.5;
+                letter-spacing: 0.5px;
             }
             .blessing { 
                 font-size: 22px; 
-                line-height: 1.8; /* 减小行高，适配小屏 */
+                line-height: 1.7; /* iOS高棉语行高进一步优化 */
                 margin: 15px 0;
+                letter-spacing: 0.5px;
+            }
+            .words {
+                font-size: 18px; /* iOS高棉语列表文本缩小 */
+                line-height: 1.5;
+                padding-left: 8px;
             }
             .card { 
-                padding: 40px 20px; /* 减少内边距 */
+                padding: 40px 20px;
                 margin: 15px auto;
             }
             .stars-wrapper { 
@@ -304,16 +332,17 @@
                 padding: 12px 30px;
                 margin-top: 20px;
             }
-            /* 移动端body额外留边距 */
             body {
                 padding: 15px 10px 30px;
             }
         }
 
-        /* 适配更小屏幕（手机竖屏） */
+        /* ✅ 适配iOS小屏（iPhone SE/12 mini等） */
         @media (max-width: 480px) {
             .title { font-size: 32px; letter-spacing: 4px; }
+            .bigtitle { font-size: 30px; }
             .blessing { font-size: 18px; }
+            .words { font-size: 16px; }
             .card { padding: 30px 15px; }
             .card a { font-size: 18px; padding: 10px 25px; }
         }
@@ -353,22 +382,25 @@
             <p class="bigtitle">មហាសង្ក្រាន្ត អានហួយ</p>
             <a href="https://surl.amap.com/1diTd5U1BfFv" target="_blank">披云徽府 · 合肥</a>
             <p class="blessing">សូមគោរពជូនពរ​ និងប្រសិទ្ធពរជ័យ​ សិរីមង្គល​ វិបុលសុខ​ មហាប្រសេីរ​ ក្នុងឱកាសចូលឆ្នាំថ្មី​ ឆ្នាំមមី អដ្ឋស័ក​ ថ្ងៃ អង្គារ ១២រោច ខែចេត្រ ត្រូវនឹងថ្ងៃទី ១៤ ខែមេសា ឆ្នាំ២០២៦</p>
-            <p class="blessing">祝福大家在2026年安徽省高棉宋干节新年活动中玩得开心，并祝愿大家在新的一年里幸福安康，万事如意！</p>
-            <p class="blessing">Happy Khmer Songkran Festival 2026 in Anhui! Wishing everyone a joyful celebration and a prosperous new year filled with happiness and good health!</p>
+            <p class="blessing" lang="zh">祝福大家在2026年安徽省高棉宋干节新年活动中玩得开心，并祝愿大家在新的一年里幸福安康，万事如意！</p>
+            <p class="blessing" lang="en">Happy Khmer Songkran Festival 2026 in Anhui! Wishing everyone a joyful celebration and a prosperous new year filled with happiness and good health!</p>
             <p class="blessing">របៀបវារៈកម្មវិធី</p>
-<p class="words">·ម៉ោង 15:40 នាទី និស្សិតទាំងអស់ជួបជុំគ្នា</p>
-<p class="words">·ម៉ោង 15:40 ដល់ 17:00 និស្សិតលេងល្បែងប្រពៃណីខ្មែរ</p>
-<p class="words">·ម៉ោង 17:00 ដល់ 17:05 ប្រកាសហេតុ និងប្រកាសសមាសភាពចូលរួមកម្មវិធី</p>
-<p class="words">·ម៉ោង 16:05 ដល់ 16:10 គោរពទង់ជាតិ នៃព្រះរាជាណាចក្រកម្ពុជា</p>
-<p class="words">·ម៉ោង 17:10 ដល់ 17:15 គោរពវិញ្ញាណក្ខ័ន្ធវីរៈកងទ័ព និងវីរៈយុទ្ធជនកម្ពុជា</p>
-<p class="words">·ម៉ោង 17:15 ដល់ 17:25 របាយការណ៍ស្វាគមន៍ ដោយលោក វុឌ្ឍី សុធិរិន្ត អនុប្រធានក្រុមតំណាងនិស្សិត អ.ម.ក ប្រចាំតំបន់២ នៃសាធារណរដ្ឋប្រជាមានិតចិន</p>
-<p class="words">·ម៉ោង 17:25 ដល់ 17:50 ទស្សនាវីដេអូអនុស្សាវរីយ៍</p>
-<p class="words">·ម៉ោង 18:09 ដល់ 18:19 ពិធីទទួលទេវតាឆ្នាំថ្មីឆ្នាំមមី ព្រះនាម ព្រះនាងរាក្សសារទេវី</p>
-<p class="words">·ម៉ោង 18:20 ដល់ 18:30 សារជូនពរឆ្នាំថ្មីឆ្នាំមមី អំពី ឯកឧត្តម ឡាវ វ៉ាន់ ប្រធានក្រុមការងារគ្រប់គ្រងនិស្សិតអ.ម.កចិន</p>
-<p class="words">·ម៉ោង 18:30 នាទី កម្មវិធីពិសារអាហារសាមគ្គី</p>
-<p class="words">·ម៉ោង 19:00 នាទី កម្មវិធីសំណួរចម្លើយ និងចាប់រង្វាន់</p>
-<p class="words">·ម៉ោង 19:10 នាទី និស្សិតរាំលេងកម្សាន្ត</p>
-<p class="words">·ម៉ោង 23:30 នាទី បិទកម្មវិធី</p>
+            <p class="words">·ម៉ោង 15:40 នាទី និស្សិតទាំងអស់ជួបជុំគ្នា</p>
+            <p class="words">·ម៉ោង 15:40 ដល់ 17:00 និស្សិតលេងល្បែងប្រពៃណីខ្មែរ</p>
+            <p class="words">·ម៉ោង 17:00 ដល់ 17:05 ប្រកាសហេតុ និងប្រកាសសមាសភាពចូលរួមកម្មវិធី</p>
+            <p class="words">·ម៉ោង 16:05 ដល់ 16:10 គោរពទង់ជាតិ នៃព្រះរាជាណាចក្រកម្ពុជា</p>
+            <p class="words">·ម៉ោង 17:10 ដល់ 17:15 គោរពវិញ្ញាណក្ខ័ន្ធវីរៈកងទ័ព និងវីរៈយុទ្ធជនកម្ពុជា</p>
+            <p class="words">·ម៉ោង 17:15 ដល់ 17:25 របាយការណ៍ស្វាគមន៍ ដោយលោក វុឌ្ឍី សុធិរិន្ត អនុប្រធានក្រុមតំណាងនិស្សិត អ.ម.ក ប្រចាំតំបន់២ នៃសាធារណរដ្ឋប្រជាមានិតចិន</p>
+            <p class="words">·ម៉ោង 17:25 ដល់ 17:50 ទស្សនាវីដេអូអនុស្សាវរីយ៍</p>
+            <p class="words">·ម៉ោង 18:09 ដល់ 18:19 ពិធីទទួលទេវតាឆ្នាំថ្មីឆ្នាំមមី ព្រះនាម ព្រះនាងរាក្សសារទេវី</p>
+            <p class="words">·ម៉ោង 18:20 ដល់ 18:30 សារជូនពរឆ្នាំថ្មីឆ្នាំមមី អំពី ឯកឧត្តម ឡាវ វ៉ាន់ ប្រធានក្រុមការងារគ្រប់គ្រងនិស្សិតអ.ម.កចិន</p>
+            <p class="words">·ម៉ោង 18:30 នាទី កម្មវិធីពិសារអាហារសាមគ្គី</p>
+            <p class="words">·ម៉ោង 19:00 នាទី កម្មវិធីសំណួរចម្លើយ និងចាប់រង្វាន់</p>
+            <p class="words">·ម៉ោង 19:10 នាទី និស្សិតរាំលេងកម្សាន្ត</p>
+            <p class="words">·ម៉ោង 23:30 នាទី បិទកម្មវិធី</p>
+        </div>
+    </div>
+
     <script>
         // 花瓣飘落
         function createSnowflake() {
