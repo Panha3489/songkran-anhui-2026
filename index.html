@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 SONGKRAN ANHUI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ✅ 核心修复1：全局锁定滚动条，彻底禁止闪现 */
+        html {
+            overflow: hidden !important;
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, rgba(251, 223, 160, 0.2), rgba(248, 203, 104, 0.2));
+            /* ✅ 核心修复2：双重锁定滚动条 */
+            overflow: hidden !important;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+        }
+
+        /* ✅ 核心修复3：花瓣改为fixed，完全脱离文档流 */
+        .snowflake {
+            position: fixed !important;
+            top: -10px;
+            z-index: 1;
+            color: #ff8a80;
+            font-size: 12px;
+            animation: snowfall linear infinite;
+            text-shadow: 0 0 2px rgba(0,0,0,0.3);
+            transform: translateZ(0);
+        }
+
+        @keyframes snowfall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* 主容器：限制高度+内部溢出截断 */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            max-height: 100vh;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 72px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #d32f2f, #f57c00, #fff, #f57c00, #d32f2f);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s linear infinite;
+            text-shadow: 0 0 25px rgba(245, 124, 0, 0.9), 0 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+            letter-spacing: 10px;
+            font-family: 'STKaiti', 'KaiTi', 'Microsoft YaHei', serif;
+            -webkit-text-stroke: 0.5px #f57c00;
+        }
+
+        @keyframes titleGlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .card {
+            background: url("屏幕截图 2026-04-08 173200.png") center center no-repeat;
+            background-size: cover;
+            border-radius: 24px;
+            padding: 60px 40px;
+            margin: 30px auto;
+            max-width: 800px;
+            max-height: calc(100vh - 200px);
+            overflow: hidden;
+            box-shadow: inset 0 0 80px rgba(255,255,255,0.8), 0 20px 40px rgba(0,0,0,0.15);
+            position: relative;
+            animation: cardFloat 3s ease-in-out infinite;
+            transform: translateZ(0);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 253, 245, 0.75);
+            border-radius: 24px;
+            z-index: 1;
+        }
+
+        .card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .blessing {
+            font-size: 32px;
+            color: #b71c1c;
+            line-height: 2.2;
+            margin: 20px 0;
+            animation: textFade 2s ease-in-out infinite alternate;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.9), 0 1px 2px rgba(0,0,0,0.3);
+            -webkit-text-stroke: 0.3px #8c0000;
+            letter-spacing: 2px;
+            font-family: 'STKaiti', 'KaiTi', serif;
+        }
+
+        @keyframes textFade {
+            0% { opacity: 0.9; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.02); }
+        }
+
+        /* ✅ 核心修改：地图链接按钮动态特效 */
+        .card a {
+            display: inline-block;
+            margin-top: 25px;
+            font-size: 24px;
+            color: #fff; /* 文字改为白色，更醒目 */
+            font-weight: 800;
+            text-decoration: none;
+            padding: 16px 40px; /* 增大内边距，按钮更饱满 */
+            border-radius: 50px; /* 圆形边角，更圆润 */
+            /* 渐变背景+发光效果 */
+            background: linear-gradient(135deg, #d32f2f, #f57c00);
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3), 0 0 20px rgba(245, 124, 0, 0.2);
+            /* 基础过渡，让所有动画更丝滑 */
+            transition: all 0.4s cubic-bezier(0.3, 0.7, 0.2, 1);
+            /* 呼吸动画（默认持续） */
+            animation: breath 3s ease-in-out infinite alternate;
+            /* 禁止文字选中 */
+            user-select: none;
+            /* 硬件加速 */
+            transform: translateZ(0);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 按钮hover特效：放大+加深阴影+上移 */
+        .card a:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 8px 25px rgba(211, 47, 47, 0.5), 0 0 30px rgba(245, 124, 0, 0.4);
+            color: #fff;
+        }
+
+        /* 按钮点击反馈：缩小+短暂加深颜色 */
+        .card a:active {
+            transform: scale(0.98) translateY(-2px);
+            background: linear-gradient(135deg, #b71c1c, #e65100);
+            box-shadow: 0 4px 10px rgba(211, 47, 47, 0.4);
+        }
+
+        /* 按钮内部流光特效（hover时显示） */
+        .card a::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transform: rotate(45deg);
+            transition: all 0.8s ease;
+            opacity: 0;
+        }
+
+        .card a:hover::before {
+            opacity: 1;
+            left: 150%;
+        }
+
+        /* 呼吸动画：轻微缩放+透明度变化 */
+        @keyframes breath {
+            0% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+            100% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(-4deg); }
+            50% { transform: rotate(4deg); }
+        }
+
+        .stars-wrapper {
+            width: 100%;
+            max-width: 500px;
+            height: 100px;
+            margin: 0 auto 40px;
+            position: relative;
+            pointer-events: none;
+        }
+        .star-decoration {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .star-1 { left: 0; animation: swing 3s ease-in-out infinite; }
+        .star-2 { left: 50%; transform: translate(-50%, -50%); animation: swing 3.2s ease-in-out infinite 0.3s; }
+        .star-3 { right: 0; animation: swing 3.5s ease-in-out infinite 0.6s; }
+
+        /* ✅ 核心修复4：烟花改为fixed，完全脱离文档流 */
+        .firework {
+            position: fixed !important;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #fff;
+            animation: firework 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            z-index: 1;
+            box-shadow: 0 0 12px rgba(255,255,255,0.9);
+            transform: translateZ(0);
+            opacity: 0;
+        }
+        @keyframes firework {
+            0% { transform: scale(0); opacity: 1; }
+            50% { opacity: 1; }
+            100% { transform: scale(30); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .title { font-size: 48px; letter-spacing: 6px; }
+            .blessing { font-size: 24px; line-height: 2; }
+            .card { padding: 40px 25px; }
+            .stars-wrapper { max-width: 320px; height: 80px; }
+            .star-decoration { width: 60px; height: 60px; }
+            /* 移动端按钮适配 */
+            .card a {
+                font-size: 20px;
+                padding: 12px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">SONGKRAN ANHUI</h1>
+        <div class="stars-wrapper">
+            <svg class="star-decoration star-1" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="90" fill="none" stroke="#c9a66b" stroke-width="8"/>
+                <path d="M100 30 L145 65 L170 110 L145 155 L100 170 L55 155 L30 110 L55 65 Z" fill="#ff6b6b" stroke="#c9a66b" stroke-width="3"/>
+                <path d="M100 30 L55 65 L30 110 L55 155 L100 170 L145 155 L170 110 L145 65 Z" fill="url(#checker-red)" stroke="#c9a66b" stroke-width="3"/>
+                <defs>
+                    <pattern id="checker-red" patternUnits="userSpaceOnUse" width="10" height="10">
+                        <rect width="10" height="10" fill="#fff"/>
+                        <rect width="5" height="5" fill="#ff6b6b"/>
+                        <rect x="5" y="5" width="5" height="5" fill="#ff6b6b"/>
+                    </pattern>
+                </defs>
+            </svg>
+            <svg class="star-decoration star-2" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="90" fill="none" stroke="#d4af37" stroke-width="8"/>
+                <path d="M100 30 L145 65 L170 110 L145 155 L100 170 L55 155 L30 110 L55 65 Z" fill="#d4af37" stroke="#d4af37" stroke-width="3"/>
+                <path d="M100 30 L55 65 L30 110 L55 155 L100 170 L145 155 L170 110 L145 65 Z" fill="rgba(255,255,255,0.8)" stroke="#d4af37" stroke-width="3"/>
+            </svg>
+            <svg class="star-decoration star-3" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="90" fill="none" stroke="#d4af37" stroke-width="8"/>
+                <path d="M100 30 L145 65 L170 110 L145 155 L100 170 L55 155 L30 110 L55 65 Z" fill="#ff4d4d" stroke="#d4af37" stroke-width="3"/>
+                <path d="M100 30 L145 65 L170 110 L145 155 L100 170" fill="#ffd93d" stroke="#d4af37" stroke-width="3"/>
+                <path d="M100 170 L145 155 L170 110" fill="#33ff33" stroke="#d4af37" stroke-width="3"/>
+                <path d="M100 170 L55 155 L30 110" fill="#b333ff" stroke="#d4af37" stroke-width="3"/>
+                <path d="M100 30 L55 65 L30 110" fill="#ff9933" stroke="#d4af37" stroke-width="3"/>
+            </svg>
+        </div>
+        <div class="card">
+            <p class="blessing">មហាសង្ក្រាន្ត អានហួយ</p>
+            <p class="blessing">សូមគោរពជូនពរ​ និងប្រសិទ្ធពរជ័យ​ សិរីមង្គល​ វិបុលសុខ​ មហាប្រសេីរ​ ក្នុងឱកាសចូលឆ្នាំថ្មី​ ឆ្នាំមមី អដ្ឋស័ក​ ថ្ងៃ អង្គារ ១២រោច ខែចេត្រ ត្រូវនឹងថ្ងៃទី ១៤ ខែមេសា ឆ្នាំ២០២៦</p>
+            <a href="https://surl.amap.com/1diTd5U1BfFv" target="_blank">披云徽府 · 合肥</a>
+        </div>
+    </div>
+
+    <script>
+        // 花瓣飘落
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.innerHTML = '❀';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+            snowflake.style.fontSize = Math.random() * 20 + 10 + 'px';
+            document.body.appendChild(snowflake);
+            setTimeout(() => snowflake.remove(), 5000);
+        }
+        setInterval(createSnowflake, 300);
+
+        // 单个烟花
+        function createSingleFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = Math.random() * 100 + 'vw';
+            firework.style.top = Math.random() * 60 + 'vh';
+            firework.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            document.body.appendChild(firework);
+            setTimeout(() => firework.remove(), 1500);
+        }
+
+        // 持续烟花
+        function startContinuousFireworks() {
+            let initCount = 0;
+            const initTimer = setInterval(() => {
+                if (initCount >= 10) {
+                    clearInterval(initTimer);
+                    setInterval(() => {
+                        const count = Math.floor(Math.random() * 3) + 1;
+                        for (let i = 0; i < count; i++) createSingleFirework();
+                    }, 500);
+                    return;
+                }
+                createSingleFirework();
+                initCount++;
+            }, 100);
+        }
+
+        window.onload = () => {
+            setTimeout(startContinuousFireworks, 500);
+        };
+    </script>
+</body>
+</html>
